@@ -1,5 +1,4 @@
-function [weight,bias, truePositive, falsePositive]=SeqMinOpt(test,testclasses,train,trainclasses, kernel, eps)
-
+function [weight,bias, truePositive,falsePositive]=SeqMinOpt(test,testclasses,train,trainclasses, kernel, eps)
     posCount = 0;
     negCount = 0;
     trainrowCount = size(train,1);
@@ -13,7 +12,7 @@ function [weight,bias, truePositive, falsePositive]=SeqMinOpt(test,testclasses,t
         end
     end
 
-    alpha = randi([0, 1000], [trainrowCount, 1]);
+    alpha = randi([0, 11000], [trainrowCount, 1]);
     diff = dot(alpha, trainclasses);
 
     for i = 1:posCount
@@ -157,9 +156,9 @@ function [weight,bias, truePositive, falsePositive]=SeqMinOpt(test,testclasses,t
                 end
             end
         end
-        
+      
         truePositive = truePositiveCount / (truePositiveCount + falseNegativeCount);
-        falsePositive = falsePositiveCount / (falsePositiveCount + falseNegativeCount);
+        falsePositive = falsePositiveCount / (falsePositiveCount + trueNegativeCount);
         
         % break if we reached the desired accuracy (based on the param eps)
         if 1 - (truePositiveCount + trueNegativeCount) / (truePositiveCount + trueNegativeCount + falseNegativeCount + falsePositiveCount) < eps
@@ -168,4 +167,5 @@ function [weight,bias, truePositive, falsePositive]=SeqMinOpt(test,testclasses,t
     end
     weight=w;
     bias=b;
+
 end
